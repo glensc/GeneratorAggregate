@@ -14,18 +14,19 @@ use IteratorAggregate;
  */
 class GeneratorAggregate implements IteratorAggregate {
 	/**
-	 * @var Closure to execute to obtain top level Generator|Iterator
+	 * @var Generator|ArrayIterator $it
 	 */
-	private $closure;
+	private $it;
 
-	public function __construct($class) {
-		$this->closure = $class;
+	/**
+	 * @param Generator|ArrayIterator $it
+	 */
+	public function __construct($it) {
+		$this->it = $it;
 	}
 
 	public function getIterator() {
-		$closure = $this->closure;
-
-		return $this->flatten($closure());
+		return $this->flatten($this->it);
 	}
 
 	/**
@@ -35,8 +36,14 @@ class GeneratorAggregate implements IteratorAggregate {
 		return iterator_to_array($this->getIterator());
 	}
 
-	private function flatten($generator) {
-		foreach ($generator as $item) {
+	/**
+	 * Iterate over $it, recurse if element is iterator or generator
+	 *
+	 * @param Generator|ArrayIterator $it
+	 * @return Generator
+	 */
+	private function flatten($it) {
+		foreach ($it as $item) {
 			if ($item instanceof Generator || $item instanceof ArrayIterator) {
 				foreach ($this->flatten($item) as $inner) {
 					yield $inner;
