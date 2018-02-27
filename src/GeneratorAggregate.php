@@ -1,6 +1,6 @@
 <?php
 
-namespace Eventum\Delfi;
+namespace glen\GeneratorAggregate;
 
 use ArrayIterator;
 use Generator;
