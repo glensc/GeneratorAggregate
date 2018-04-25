@@ -2,7 +2,6 @@
 
 namespace glen\GeneratorAggregate;
 
-use ArrayIterator;
 use Generator;
 use IteratorAggregate;
 use Traversable;
